@@ -1,0 +1,23 @@
+# Minimal configuration for getting started
+language: "en-US"
+
+reviews:
+  profile: "chill"
+  high_level_summary: true
+  auto_review:
+    enabled: true
+    drafts: false
+    ignore_title_keywords:
+      - "wip"
+      - "draft"
+  path_instructions:
+    - path: "**/*.*"
+      instructions: |
+        Review the code with the following points in mind:
+        - Variables should be as expressive as possible
+        - Unit tests should be written whenever it's possible
+        - Code has to be secure by design
+        - The project architecture should respect the following code principles:
+          - DDD (domain driven design)
+          - SOLID
+  poem: false
