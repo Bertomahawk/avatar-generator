@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { AvatarsController } from './avatarsController';
+import { AvatarsController } from './avatars.controller';
 import { AvatarsService } from './avatars.service';
-import { AvatarInterfaceToken } from "./avatar.interface";
-import { AvatarsRepository } from "./avatars.repository";
+import { AvatarInterfaceToken } from "./avatar-strategy.interface";
+import { AvatarGeminiStrategy } from "./avatar-gemini.strategy";
 
 @Module({
   imports: [],
@@ -10,7 +10,7 @@ import { AvatarsRepository } from "./avatars.repository";
   providers: [AvatarsService,
     {
       provide: AvatarInterfaceToken,
-      useClass: AvatarsRepository,
+      useClass: AvatarGeminiStrategy,
     }
   ],
 })

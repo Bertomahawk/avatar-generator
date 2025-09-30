@@ -1,6 +1,6 @@
-import { AvatarInterface } from "./avatar.interface";
+import { AvatarStrategyInterface } from "./avatar-strategy.interface";
 
-export class AvatarsRepository implements AvatarInterface {
+export class AvatarGeminiStrategy implements AvatarStrategyInterface {
   getAvatarFromPrompt(prompt: string) {
     return new ArrayBuffer(0);
   }

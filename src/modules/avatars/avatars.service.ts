@@ -1,13 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { AvatarInterfaceToken } from "./avatar.interface";
-import { type AvatarInterface } from "./avatar.interface";
+import { AvatarInterfaceToken } from "./avatar-strategy.interface";
+import { type AvatarStrategyInterface } from "./avatar-strategy.interface";
 
 @Injectable()
 export class AvatarsService {
 
   constructor(
     @Inject(AvatarInterfaceToken)
-    private readonly avatarRepo: AvatarInterface) {
+    private readonly avatarRepo: AvatarStrategyInterface) {
   }
 
   getAvatar(prompt?: string, image?: Express.Multer.File) {
