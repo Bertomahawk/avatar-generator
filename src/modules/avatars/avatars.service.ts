@@ -1,6 +1,7 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { AvatarInterfaceToken } from "./avatar-strategy.interface";
 import { type AvatarStrategyInterface } from "./avatar-strategy.interface";
+import { AvatarRequestError } from "./avatars";
 
 @Injectable()
 export class AvatarsService {
@@ -10,17 +11,32 @@ export class AvatarsService {
     private readonly avatarRepo: AvatarStrategyInterface) {
   }
 
-  getAvatar(prompt?: string, image?: Express.Multer.File) {
-    if (prompt && image) {
-      console.log('prompt & image');
-      return this.avatarRepo.getAvatarFromPromptAndImage(prompt, image);
-    } else if (prompt) {
-      console.log('prompt');
-      return this.avatarRepo.getAvatarFromPrompt(prompt);
-    } else if (image) {
-    console.log('image');
-      return this.avatarRepo.getAvatarFromImage(image);
+  async getAvatar(prompt?: string, image?: Express.Multer.File) {
+    try {
+      if (prompt && image) {
+        const f = await this.avatarRepo.getAvatarFromPromptAndImage(prompt, image);
+        return f
+      } else if (prompt) {
+        return await this.avatarRepo.getAvatarFromPrompt(prompt);
+      } else if (image) {
+        return await this.avatarRepo.getAvatarFromImage(image);
+      }
+      return null;
+    } catch (e) {
+      throw this.handleError(e);
     }
-    return null;
+  }
+
+  handleError(e: any) {
+    if (e instanceof Error) {
+      switch (e.message) {
+        case AvatarRequestError.UNDEFINED_ERROR:
+          return new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR);
+        case AvatarRequestError.NO_DATA_ERROR:
+          return new HttpException(e.message, HttpStatus.UNPROCESSABLE_ENTITY);
+        case AvatarRequestError.TOO_MANY_REQUESTS:
+          return new HttpException(e.message, HttpStatus.TOO_MANY_REQUESTS);
+      }
+    }
   }
 }

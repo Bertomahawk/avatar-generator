@@ -10,7 +10,6 @@ export class ValidationPipe implements PipeTransform<AvatarDTO> {
     try {
       return this.schema.parse(value);
     } catch (error) {
-      console.log(error);
       throw new BadRequestException('Validation failed');
     }
   }
@@ -22,7 +21,7 @@ export class CrossValidationPipe implements PipeTransform<{ body: AvatarDTO, fil
   transform(value: { body: AvatarDTO, file?: Express.Multer.File }) {
     const { body, file } = value;
 
-    if (!body.prompt || !file) {
+    if (!body?.prompt && !file) {
       throw new BadRequestException('At least one of prompt or image must be provided');
     }
     return value;
