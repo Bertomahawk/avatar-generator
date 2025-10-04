@@ -8,18 +8,18 @@ export class AvatarsService {
 
   constructor(
     @Inject(AvatarInterfaceToken)
-    private readonly avatarRepo: AvatarStrategyInterface) {
+    private readonly avatarStrategy: AvatarStrategyInterface) {
   }
 
   async getAvatar(prompt?: string, image?: Express.Multer.File) {
     try {
       if (prompt && image) {
-        const f = await this.avatarRepo.getAvatarFromPromptAndImage(prompt, image);
+        const f = await this.avatarStrategy.getAvatarFromPromptAndImage(prompt, image);
         return f
       } else if (prompt) {
-        return await this.avatarRepo.getAvatarFromPrompt(prompt);
+        return await this.avatarStrategy.getAvatarFromPrompt(prompt);
       } else if (image) {
-        return await this.avatarRepo.getAvatarFromImage(image);
+        return await this.avatarStrategy.getAvatarFromImage(image);
       }
       return null;
     } catch (e) {
