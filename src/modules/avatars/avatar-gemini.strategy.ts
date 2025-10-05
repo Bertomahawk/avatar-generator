@@ -1,8 +1,6 @@
 import { ContentListUnion, GenerateContentConfig, GoogleGenAI } from "@google/genai";
 import { AvatarStrategyInterface } from "./avatar-strategy.interface";
 import { StreamableFile } from "@nestjs/common";
-import { createReadStream } from 'fs';
-import { join } from 'path';
 import { AvatarRequestError } from "./avatars";
 import * as process from "node:process";
 
@@ -31,11 +29,13 @@ export class AvatarGeminiStrategy implements AvatarStrategyInterface {
   }
 
   async getAvatarFromPrompt(prompt: string) {
-    return new StreamableFile(createReadStream(join(process.cwd(), 'package.json')))
+    // TODO implement returning image from prompt
+    return new StreamableFile(Buffer.from(''), { type: 'image/png' });
   }
 
   async getAvatarFromImage(image: Express.Multer.File) {
-    return new StreamableFile(image.buffer);
+    // TODO implement returning image from image
+    return new StreamableFile(Buffer.from(''), { type: 'image/png' });
   }
 
   async getAvatarFromPromptAndImage(prompt: string, image: Express.Multer.File) {
